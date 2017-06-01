@@ -1,0 +1,19 @@
+﻿<div class="page_content">
+    <div class="container" style="padding-top:50px">
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1>Rate an image</h1>
+                </div>
+                <div class="panel-body">
+                    <img class="img-responsive center-block" ng-if="showImage" src="{{ imageUrl }}" />
+                    <div class="text-center">
+                        <button type="button" class="btn btn-secondary footer-buttons" ng-click="saveImageRating(true)"><span class="glyphicon glyphicon-thumbs-up"></span> &nbsp;&nbsp;Like&nbsp;</button>
+                        <button type="button" class="btn btn-info footer-buttons" ng-click="getRandomImage()">Get image</button>
+                        <button type="button" class="btn btn-secondary footer-buttons" ng-click="saveImageRating(false)"><span class="glyphicon glyphicon-thumbs-down"></span> Dislike</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
