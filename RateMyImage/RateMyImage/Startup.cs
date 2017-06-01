@@ -2,8 +2,6 @@
 {
     using Entities;
     using IdentityServer;
-    using Service;
-    using ViewModels;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -12,6 +10,8 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Repository;
+    using Service;
+    using ViewModels;
 
     public class Startup
     {
