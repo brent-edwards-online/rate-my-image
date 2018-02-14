@@ -2,11 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
-    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    <EnableDefaultContentItems>true</EnableDefaultContentItems>
     <AssemblyName>RateMyImage</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
+    <!--
     <Content Include="wwwroot\css\styles.css" />
     <Content Include="wwwroot\healthcheck.html" />
     <Content Include="wwwroot\scripts\app.js" />
@@ -18,6 +19,7 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Content Include="wwwroot\views\header.html" />
+    -->
   </ItemGroup>
 
   <ItemGroup>
