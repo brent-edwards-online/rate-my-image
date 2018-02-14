@@ -16,23 +16,25 @@ angular.module('careerHub')
             var tokenData = localStorageService.get('token-data');
             if (tokenData && tokenData.access_token) {
                 var userData = localStorageService.get('user-data');
-                $scope.currentUser = userData.firstname; 
-                return true;
+                if (userData) {
+                    $scope.currentUser = userData.firstname;
+                    return true;
+                }
+                return false;
             }
             else {
                 return false;
             }
-        }
+        };
 
         $scope.logout = function () {
             localStorageService.remove('token-data');
             localStorageService.remove('user-data');
-        }
+        };
 
         $scope.login = function () {
 
-            if (!$scope.validate(false))
-            {
+            if (!$scope.validate(false)) {
                 return;
             }
 
@@ -50,8 +52,11 @@ angular.module('careerHub')
                                 case 404:
                                     $scope.serverError = "Server Error 404:" + response.statusText;
                                     break;
+                                case 500:
+                                    $scope.serverError = "Dirty ole Internal Server Error";
+                                    break;
                                 default:
-                                    $scope.serverError = response.data.error_description;
+                                    $scope.serverError = "Something went really wrong";
                             }
                             toaster.pop({ type: 'error', body: $scope.serverError });
                         }
@@ -61,21 +66,21 @@ angular.module('careerHub')
                     $scope.serverError = response.data.error_description;
                     toaster.pop({ type: 'error', body: $scope.serverError });
                 });
-        }
+        };
 
         $scope.continueAsGuest = function () {
             $scope.loginEmail = "guest@guest.com";
             $scope.loginPassword = "GU3$Tl@g1n";
             $scope.login();
-        }
+        };
 
         $scope.register = function () {
-            if ($scope.registerEnabled == false) {
+            if ($scope.registerEnabled === false) {
                 $scope.registerEnabled = true;
                 toaster.pop({ type: 'info', body: "Email, password, firstname and last name are required to register" });
             }
             else {
-                if ($scope.validate(true) == true) {
+                if ($scope.validate(true) === true) {
                     loginService.register($scope.loginEmail, $scope.loginPassword, $scope.registerFirstname, $scope.registerLastname)
                         .then(function (response) {
                             toaster.pop({ type: 'info', body: "Register succeeded. You can now login with your new credentials" });
@@ -96,34 +101,33 @@ angular.module('careerHub')
                 }
             }
             $scope.registerEnabled = true;
-        }
+        };
 
-        $scope.validate = function(register) {
+        $scope.validate = function (register) {
             var emailRegEx = new RegExp("^[a-z0-9!#$%&' * +/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$");
-            if (!$scope.loginEmail || $scope.loginEmail == '' || !emailRegEx.test($scope.loginEmail)) {
+            if (!$scope.loginEmail || $scope.loginEmail === '' || !emailRegEx.test($scope.loginEmail)) {
                 toaster.pop({ type: 'error', body: "Email is invalid" });
                 return false;
             }
 
-            if (!$scope.loginPassword || $scope.loginPassword == '') {
+            if (!$scope.loginPassword || $scope.loginPassword === '') {
                 toaster.pop({ type: 'error', body: "Password is required" });
                 return false;
             }
 
-            if (register == true)
-            {
-                if (!$scope.registerFirstname || $scope.registerFirstname == '') {
+            if (register === true) {
+                if (!$scope.registerFirstname || $scope.registerFirstname === '') {
                     toaster.pop({ type: 'error', body: "First name is required" });
                     return false;
                 }
 
-                if (!$scope.registerLastname || $scope.registerLastname == '') {
+                if (!$scope.registerLastname || $scope.registerLastname === '') {
                     toaster.pop({ type: 'error', body: "Last name is required" });
                     return false;
                 }
             }
             return true;
-        }
+        };
     }])
     .controller('ImageController', ['$scope', 'hasAccess', '$state', 'imageService', 'initialImage', 'toaster', function ($scope, hasAccess, $state, imageService, initialImage, toaster) {
         $scope.hasAccess = hasAccess;
@@ -151,7 +155,7 @@ angular.module('careerHub')
                     $scope.serverError = response.data.error_description;
                     toaster.pop({ type: 'error', body: $scope.serverError });
                 });
-        }
+        };
 
         $scope.saveImageRating = function (isLiked) {
             imageService.saveImage(isLiked, $scope.currentImageData)
@@ -172,7 +176,7 @@ angular.module('careerHub')
                     }
                     toaster.pop({ type: 'error', body: $scope.serverError });
                 });
-        }
+        };
     }])
     .controller('ReviewController', ['$scope', 'hasAccess', '$state', 'imageService', 'filterFilter', 'toaster', function ($scope, hasAccess, $state, imageService, filterFilter, toaster) {
         $scope.hasAccess = hasAccess;
@@ -190,17 +194,17 @@ angular.module('careerHub')
                 function (response) {
                     console.log("Image removed");
                     var i = $scope.imageList.indexOf($scope.imageList.filter(function (item) {
-                        return item.userImageId == imageId
-                    })[0])
+                        return item.userImageId === imageId;
+                    })[0]);
                     $scope.imageList.splice(i, 1);
-                    $scope.filterImages($scope.view);  
+                    $scope.filterImages($scope.view);
                     toaster.pop({ type: 'info', body: "Image was removed" });
                 },
                 function (response) {
                     $scope.serverError = response.data.error_description;
                     toaster.pop({ type: 'error', body: $scope.serverError });
                 });
-        }
+        };
 
         imageService.getAllImages()
             .then(
@@ -222,8 +226,7 @@ angular.module('careerHub')
 
         $scope.filterImages = function (view) {
             $scope.view = view;
-            switch (view)
-            {
+            switch (view) {
                 case 2:
                     $scope.filteredImageList = filterFilter($scope.imageList, { isLiked: false });
                     break;
@@ -233,8 +236,8 @@ angular.module('careerHub')
                 default:
                     $scope.filteredImageList = $scope.imageList;
             }
-            
-        }
+
+        };
     }])
     .controller('AboutController', ['$scope', function ($scope) {
 
