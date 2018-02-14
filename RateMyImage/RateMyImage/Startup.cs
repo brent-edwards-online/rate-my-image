@@ -46,11 +46,7 @@
             // Entity Framework DbContext
             services.AddDbContext<CareerHubDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("CareerHub")));
-
-            // Entity Framework DbContext
-            services.AddDbContext<GymManagerDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("GymManager")));
-
+            
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
                 .AddDefaultTokenProviders();
@@ -59,8 +55,6 @@
 
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IUserImageRepository, UserImageRepository>();
-            services.AddTransient<IMemberService, MemberService>();
-            services.AddTransient<IMemberRepository, MemberRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddIdentityServer()
@@ -86,9 +80,11 @@
                 app.UseDeveloperExceptionPage();
             }
 
+            //Authority = "http://ratemyimage.brentedwardsonline.com:80/",
+            //Authority = "http://localhost:5000/",
             app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
             {
-                Authority = "http://ratemyimage.brentedwardsonline.com:80/",
+                Authority = "https://rate-my-image.azurewebsites.net/",
                 AllowedScopes = { "api" },
                 RequireHttpsMetadata = false
             });

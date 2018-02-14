@@ -9,3 +9,5 @@ RateMyImage/.vs/RateMyImage/v15/Server/sqlite3/storage.ide-wal
 RateMyImage/.vs/RateMyImage/v15/Server/sqlite3/storage.ide-shm
 RateMyImage/.vs/RateMyImage/v15/Server/sqlite3/storage.ide
 RateMyImage/.vs/RateMyImage/v15/Server/sqlite3/db.lock
+RateMyImage/.vs/
+*.zip
